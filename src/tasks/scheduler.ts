@@ -1,13 +1,14 @@
 import { GenerateRandomData } from "../utils/randomData";
-import fs from "fs/promises";
-import path from "path";
-import axios, { AxiosResponse } from "axios";
-import FormData from "form-data";
-
-// import { BACKEND_URL_CALLBACK } from "consts/basic_url";
+import axios from "axios";
+import { selectRandomImage } from "services/scheduler.service";
 
 const BACKEND_URL_CALLBACK = "http://localhost:8000/measurements";
-const FASTAPI_BACKEND_URL_CALLBACK = "http://localhost:8000/test";
+const FASTAPI_BACKEND_WEIGHT_ENDPOINT = "http://localhost:8000/test";
+const FASTAPI_BACKEND_DISEASE_ENDPOINT = "http://localhost:8000/test";
+
+const DUMMY_DATA_WEIGHT_PATH: string = "src/dummy_image_data/weight_images";
+const DUMMY_DATA_DISEASE_PATH: string = "src/dummy_image_data/disease_images";
+
 export async function sendingDatScheduler() {
   try {
     const RandomData = GenerateRandomData();
@@ -29,25 +30,13 @@ export async function sendingDatScheduler() {
   }
 }
 
-const DUMMY_DATA_PATH: string = "src/dummy_image_dataset";
-
 export async function sendRandomImageScheduler() {
-  const imageFiles: string[] = await fs.readdir(DUMMY_DATA_PATH);
-  const randomIndex: number = Math.floor(Math.random() * imageFiles.length);
-  const randomImage: string = imageFiles[randomIndex];
-  const imagePath: string = path.join(DUMMY_DATA_PATH, randomImage);
-  console.log("imagePath : ", imagePath);
-
-  const imageBuffer: Buffer = await fs.readFile(imagePath);
-
-  const form = new FormData();
-  form.append("file", imageBuffer, {
-    filename: randomImage,
-    contentType: `image/${path.extname(randomImage).slice(1).toLowerCase()}`,
-  });
-
-  await axios.post(FASTAPI_BACKEND_URL_CALLBACK, form, {
-    headers: form.getHeaders(),
-  });
+  await Promise.all([
+    selectRandomImage(DUMMY_DATA_WEIGHT_PATH, FASTAPI_BACKEND_WEIGHT_ENDPOINT),
+    selectRandomImage(
+      DUMMY_DATA_DISEASE_PATH,
+      FASTAPI_BACKEND_DISEASE_ENDPOINT
+    ),
+  ]);
   return;
 }

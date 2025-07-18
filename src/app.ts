@@ -10,7 +10,6 @@ import { HttpCodes } from "./config/Errors";
 import SetRouters from "./routes/index";
 import bodyParser from "body-parser";
 import multer from "multer";
-import rateLimit from "express-rate-limit";
 import * as cron from "node-cron";
 import {
   sendingDatScheduler,
