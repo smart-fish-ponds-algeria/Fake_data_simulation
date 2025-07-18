@@ -12,7 +12,10 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import rateLimit from "express-rate-limit";
 import * as cron from "node-cron";
-import { sendingDatScheduler } from "./tasks/scheduler";
+import {
+  sendingDatScheduler,
+  sendRandomImageScheduler,
+} from "./tasks/scheduler";
 export const app = express();
 
 app.use(
@@ -55,10 +58,10 @@ if (process.env.NODE_ENV !== "test") {
     console.log(`|${" ".repeat(n)}${port_msg}${" ".repeat(n)}|`);
     console.log(`|${" ".repeat(m)}${url_msg}${" ".repeat(m)}|`);
     console.log(" " + "-".repeat(max_length));
-
-    cron.schedule("*/50 * * * * *", async () => {
+    cron.schedule("*/20 * * * * *", async () => {
       try {
         await sendingDatScheduler();
+        await sendRandomImageScheduler();
       } catch (err) {
         console.error("Error running the scheduled task:", err);
       }
