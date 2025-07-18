@@ -1,6 +1,6 @@
 import { GenerateRandomData } from "../utils/randomData";
 import axios from "axios";
-import { BACK_END_URL } from "../config/CheckableEnv";
+import { BACK_END_URL, FastApi_BACK_EN_URL } from "../config/CheckableEnv";
 import { ExpressApiRoutes, FastApiRoutes } from "../route.enum";
 import { selectRandomImage } from "../services/scheduler.service";
 
@@ -30,8 +30,14 @@ export async function sendingDatScheduler() {
 
 export async function sendRandomImageScheduler() {
   await Promise.all([
-    selectRandomImage(DUMMY_DATA_WEIGHT_PATH, FastApiRoutes.WEIGHT_ENDPOINT),
-    selectRandomImage(DUMMY_DATA_DISEASE_PATH, FastApiRoutes.DISEASE_ENDPOINT),
+    selectRandomImage(
+      DUMMY_DATA_WEIGHT_PATH,
+      `${FastApi_BACK_EN_URL}/${FastApiRoutes.WEIGHT_ENDPOINT}`
+    ),
+    selectRandomImage(
+      DUMMY_DATA_DISEASE_PATH,
+      `${FastApi_BACK_EN_URL}/${FastApiRoutes.DISEASE_ENDPOINT}`
+    ),
   ]);
   return;
 }
