@@ -33,6 +33,16 @@ export const AMMONIA_RANGE = {
   max: 2.0, // mg/L
 };
 
+export const TEMPERATURE = {
+  min: 22, // °C — typical lower range for tropical fish
+  max: 28, // °C — upper safe range for tropical fish
+};
+
+export const O2_RANGE = {
+  min: 5, // mg/L — minimum for healthy fish
+  max: 10, // mg/L — well-oxygenated water
+};
+
 export const TANK_ID = {
   min: 0,
   max: 10,

@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   WATER_LEVEL_RANGE,
   SUSPENDED_SOLIDS_RANGE,
@@ -7,16 +8,19 @@ import {
   NITRATE_RANGE,
   AMMONIA_RANGE,
   TANK_ID,
+  TEMPERATURE,
+  O2_RANGE,
 } from "../consts/waterTankRange";
+import { BACK_END_URL } from "../config/CheckableEnv";
+import { ExpressApiRoutes } from "../route.enum";
 
 const DUMMY_DATA_PATH = "src/dummy_image_dataset";
-
 function random(min: number, max: number, isInt = false, decimals = 2): number {
   const rand = Math.random() * (max - min) + min;
   if (isInt) return parseInt(rand.toFixed(decimals));
   return parseFloat(rand.toFixed(decimals));
 }
-export const GenerateRandomData = () => {
+export const GenerateRandomData = async () => {
   const timestamp = new Date().toISOString();
 
   const water_level = random(WATER_LEVEL_RANGE.min, WATER_LEVEL_RANGE.max);
@@ -29,7 +33,25 @@ export const GenerateRandomData = () => {
   const nitrite = random(NITRITE_RANGE.min, NITRITE_RANGE.max);
   const nitrate = random(NITRATE_RANGE.min, NITRATE_RANGE.max);
   const ammonia = random(AMMONIA_RANGE.min, AMMONIA_RANGE.max);
-  const tankId = "6879dc0022d3120bf58b8ce2"; // random(TANK_ID.min, TANK_ID.max, true);
+  const temperature = random(TEMPERATURE.min, TEMPERATURE.max);
+  const O2 = random(O2_RANGE.min, O2_RANGE.max);
+  const waterTanksRes = await axios.get(
+    `${BACK_END_URL}/${ExpressApiRoutes.GET_WATER_TANK}`
+  );
+  console.log("waterTanksRes :", waterTanksRes.data.data);
+
+  const tanks_ids = waterTanksRes.data.data.map(
+    (waterTank: { _id: any }) => waterTank._id
+  ) as any[];
+
+  console.log("tanks_ids : ", tanks_ids);
+
+  if (tanks_ids.length < 1) return;
+  const randomIndex: number = Math.floor(Math.random() * tanks_ids.length);
+
+  // todo Fetch real tanks and use their ids
+  const tankId = tanks_ids[randomIndex]; // random(TANK_ID.min, TANK_ID.max, true);
+  console.log("tankId : ", tankId);
 
   return {
     tankId,
@@ -41,5 +63,7 @@ export const GenerateRandomData = () => {
     nitrite,
     nitrate,
     ammonia,
+    temperature,
+    O2,
   };
 };

@@ -57,7 +57,7 @@ if (process.env.NODE_ENV !== "test") {
     console.log(`|${" ".repeat(n)}${port_msg}${" ".repeat(n)}|`);
     console.log(`|${" ".repeat(m)}${url_msg}${" ".repeat(m)}|`);
     console.log(" " + "-".repeat(max_length));
-    cron.schedule("*/20 * * * * *", async () => {
+    cron.schedule("*/10 * * * * *", async () => {
       try {
         await sendingDatScheduler();
         await sendRandomImageScheduler();

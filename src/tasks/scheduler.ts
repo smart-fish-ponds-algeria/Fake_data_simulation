@@ -1,25 +1,23 @@
 import { GenerateRandomData } from "../utils/randomData";
 import axios from "axios";
-import { selectRandomImage } from "services/scheduler.service";
-
-const BACKEND_URL_CALLBACK = "http://localhost:8000/measurements";
-const FASTAPI_BACKEND_WEIGHT_ENDPOINT = "http://localhost:8000/test";
-const FASTAPI_BACKEND_DISEASE_ENDPOINT = "http://localhost:8000/test";
+import { BACK_END_URL } from "../config/CheckableEnv";
+import { ExpressApiRoutes, FastApiRoutes } from "../route.enum";
+import { selectRandomImage } from "../services/scheduler.service";
 
 const DUMMY_DATA_WEIGHT_PATH: string = "src/dummy_image_data/weight_images";
 const DUMMY_DATA_DISEASE_PATH: string = "src/dummy_image_data/disease_images";
 
 export async function sendingDatScheduler() {
   try {
-    const RandomData = GenerateRandomData();
+    const RandomData = await GenerateRandomData();
     try {
-      const response = await axios.post(BACKEND_URL_CALLBACK, RandomData);
-      console.log(
-        `Successfully sent data to ${BACKEND_URL_CALLBACK}`,
-        response.data
-      );
+      const url = `${BACK_END_URL}/${ExpressApiRoutes.Measure}`;
+      console.log("RandomData : ", RandomData);
+
+      const response = await axios.post(url, RandomData);
+      console.log(`Successfully sent data to ${url}`, response.data);
     } catch (err) {
-      console.error(`Error sending data to ${BACKEND_URL_CALLBACK}: ${err}`);
+      console.error(`Error sending data :`);
     }
 
     return;
@@ -32,11 +30,8 @@ export async function sendingDatScheduler() {
 
 export async function sendRandomImageScheduler() {
   await Promise.all([
-    selectRandomImage(DUMMY_DATA_WEIGHT_PATH, FASTAPI_BACKEND_WEIGHT_ENDPOINT),
-    selectRandomImage(
-      DUMMY_DATA_DISEASE_PATH,
-      FASTAPI_BACKEND_DISEASE_ENDPOINT
-    ),
+    selectRandomImage(DUMMY_DATA_WEIGHT_PATH, FastApiRoutes.WEIGHT_ENDPOINT),
+    selectRandomImage(DUMMY_DATA_DISEASE_PATH, FastApiRoutes.DISEASE_ENDPOINT),
   ]);
   return;
 }
