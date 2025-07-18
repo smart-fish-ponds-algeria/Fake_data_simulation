@@ -1,0 +1,5 @@
+# Set the default behavior for text files
+* text=auto
+
+# Specify line endings for JSON files
+*.json text eol=lf
