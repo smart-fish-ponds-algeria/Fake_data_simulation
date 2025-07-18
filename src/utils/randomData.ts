@@ -38,20 +38,16 @@ export const GenerateRandomData = async () => {
   const waterTanksRes = await axios.get(
     `${BACK_END_URL}/${ExpressApiRoutes.GET_WATER_TANK}`
   );
-  console.log("waterTanksRes :", waterTanksRes.data.data);
 
   const tanks_ids = waterTanksRes.data.data.map(
     (waterTank: { _id: any }) => waterTank._id
   ) as any[];
-
-  console.log("tanks_ids : ", tanks_ids);
 
   if (tanks_ids.length < 1) return;
   const randomIndex: number = Math.floor(Math.random() * tanks_ids.length);
 
   // todo Fetch real tanks and use their ids
   const tankId = tanks_ids[randomIndex]; // random(TANK_ID.min, TANK_ID.max, true);
-  console.log("tankId : ", tankId);
 
   return {
     tankId,

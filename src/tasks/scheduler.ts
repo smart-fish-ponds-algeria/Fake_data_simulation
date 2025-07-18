@@ -12,7 +12,6 @@ export async function sendingDatScheduler() {
     const RandomData = await GenerateRandomData();
     try {
       const url = `${BACK_END_URL}/${ExpressApiRoutes.Measure}`;
-      console.log("RandomData : ", RandomData);
 
       const response = await axios.post(url, RandomData);
       console.log(`Successfully sent data to ${url}`, response.data);
@@ -28,16 +27,35 @@ export async function sendingDatScheduler() {
   }
 }
 
+// TODO Add database check to check if there is already a instance running
 export async function sendRandomImageScheduler() {
-  await Promise.all([
-    selectRandomImage(
-      DUMMY_DATA_WEIGHT_PATH,
-      `${FastApi_BACK_EN_URL}/${FastApiRoutes.WEIGHT_ENDPOINT}`
-    ),
-    selectRandomImage(
-      DUMMY_DATA_DISEASE_PATH,
-      `${FastApi_BACK_EN_URL}/${FastApiRoutes.DISEASE_ENDPOINT}`
-    ),
-  ]);
-  return;
+  const weightResponse = await selectRandomImage(
+    DUMMY_DATA_WEIGHT_PATH,
+    `${FastApi_BACK_EN_URL}/${FastApiRoutes.WEIGHT_ENDPOINT}`
+  );
+
+  const weight = weightResponse.data.weight;
+  console.log("after weight : ", weight);
+  const diseaseResponse = await selectRandomImage(
+    DUMMY_DATA_DISEASE_PATH,
+    `${FastApi_BACK_EN_URL}/${FastApiRoutes.DISEASE_ENDPOINT}`
+  );
+  const isSick = diseaseResponse.data.isSick;
+  console.log("after isSick : ", isSick);
+  const waterTanksRes = await axios.get(
+    `${BACK_END_URL}/${ExpressApiRoutes.GET_WATER_TANK}`
+  );
+
+  const tanks_ids = waterTanksRes.data.data.map(
+    (waterTank: { _id: any }) => waterTank._id
+  ) as any[];
+
+  if (tanks_ids.length < 1) return;
+  const randomIndex: number = Math.floor(Math.random() * tanks_ids.length);
+  const tankId = tanks_ids[randomIndex];
+  const url = `${BACK_END_URL}/${ExpressApiRoutes.GET_WATER_TANK}/${tankId}`;
+  console.log("url : ", url);
+
+  const res = await axios.put(url, { weight, isSick });
+  console.log("Success : ", res);
 }

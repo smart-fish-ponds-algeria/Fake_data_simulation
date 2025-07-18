@@ -1,7 +1,7 @@
 export enum FastApiRoutes {
   ROOT = "/",
-  DISEASE_ENDPOINT = "/test",
-  WEIGHT_ENDPOINT = "/test2",
+  DISEASE_ENDPOINT = "disease-detection/detect",
+  WEIGHT_ENDPOINT = "weight-prediction/predict",
 }
 
 export enum ExpressApiRoutes {

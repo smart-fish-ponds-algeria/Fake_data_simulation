@@ -12,13 +12,14 @@ export async function selectRandomImage(imagesPath: string, endpoint: string) {
 
   const imageBuffer: Buffer = await fs.readFile(imagePath);
   const form = new FormData();
-  form.append("file", imageBuffer, {
+  form.append("image", imageBuffer, {
     filename: randomImage,
     contentType: `image/${path.extname(randomImage).slice(1).toLowerCase()}`,
   });
 
-  await axios.post(endpoint, form, {
+  const response = await axios.post(endpoint, form, {
     headers: form.getHeaders(),
   });
-  return;
+
+  return response;
 }
