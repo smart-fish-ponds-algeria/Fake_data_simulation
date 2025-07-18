@@ -42,8 +42,3 @@ export const O2_RANGE = {
   min: 5, // mg/L — minimum for healthy fish
   max: 10, // mg/L — well-oxygenated water
 };
-
-export const TANK_ID = {
-  min: 0,
-  max: 10,
-};

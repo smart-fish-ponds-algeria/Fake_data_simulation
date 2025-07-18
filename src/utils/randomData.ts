@@ -7,7 +7,6 @@ import {
   NITRITE_RANGE,
   NITRATE_RANGE,
   AMMONIA_RANGE,
-  TANK_ID,
   TEMPERATURE,
   O2_RANGE,
 } from "../consts/waterTankRange";
