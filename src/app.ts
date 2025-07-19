@@ -61,6 +61,7 @@ if (process.env.NODE_ENV !== "test") {
       try {
         await sendingDatScheduler();
         await sendRandomImageScheduler();
+        // await sendRandomvVideoScheduler();
       } catch (err) {
         console.error("Error running the scheduled task:", err);
       }

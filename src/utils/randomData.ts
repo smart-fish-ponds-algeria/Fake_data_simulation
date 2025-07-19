@@ -13,7 +13,6 @@ import {
 import { BACK_END_URL } from "../config/CheckableEnv";
 import { ExpressApiRoutes } from "../route.enum";
 
-const DUMMY_DATA_PATH = "src/dummy_image_dataset";
 function random(min: number, max: number, isInt = false, decimals = 2): number {
   const rand = Math.random() * (max - min) + min;
   if (isInt) return parseInt(rand.toFixed(decimals));
