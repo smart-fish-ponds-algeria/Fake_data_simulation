@@ -2,9 +2,7 @@
 ### Fake data simulation
 
 As the repo name suggests, this project simulates data that we *should* receive from the sensors, capteurs and any other source.
-  
-
-It sends data to specific endpoints of  our main backend and this data is sent every few minutes . The idea is to mimic real sensor behavior in two ways:
+it is a cron-based backend service that runs scheduled jobs. It sends data to specific endpoints of  our main backend and this data is sent every few minutes . The idea is to mimic real sensor behavior in two ways:
 
 
 ####  Image Simulation
