@@ -3,17 +3,15 @@ import axios from "axios";
 import { BACK_END_URL, FastApi_BACK_EN_URL } from "../config/CheckableEnv";
 import { ExpressApiRoutes, FastApiRoutes } from "../route.enum";
 import { selectRandomImage } from "../services/scheduler.service";
-import fs from "fs";
 const DUMMY_DATA_WEIGHT_PATH: string = "src/dummy_image_data/weight_images";
 const DUMMY_DATA_DISEASE_PATH: string = "src/dummy_image_data/disease_images";
-const DUMMY_DATA_VIDEO: string = "src/dummy_data_video";
-import FormData from "form-data";
+// const DUMMY_DATA_VIDEO: string = "src/dummy_data_video";
+
 export async function sendingDatScheduler() {
   try {
     const RandomData = await GenerateRandomData();
     try {
       const url = `${BACK_END_URL}/${ExpressApiRoutes.Measure}`;
-
       const response = await axios.post(url, RandomData);
       console.log(`Successfully sent data to ${url}`, response.data);
     } catch (err) {

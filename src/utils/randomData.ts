@@ -44,7 +44,6 @@ export const GenerateRandomData = async () => {
   if (tanks_ids.length < 1) return;
   const randomIndex: number = Math.floor(Math.random() * tanks_ids.length);
 
-  // todo Fetch real tanks and use their ids
   const tankId = tanks_ids[randomIndex]; // random(TANK_ID.min, TANK_ID.max, true);
 
   return {
